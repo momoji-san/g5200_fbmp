@@ -228,24 +228,6 @@ Warning: FBIOPAN_DISPLAY failed: ...
 * BMP画像データを読み込めない
 * framebufferへの書き込みに失敗する
 
-### ファイル構成
-
-最小構成では以下の2つだけで使用できます。
-
-```text
-.
-├── fbmp.c
-└── README.md
-```
-
-コンパイルすると、
-
-```text
-fbmp
-```
-
-が生成されます。
-
 ### 注意事項
 
 このプログラムは **SHARP Brain PW-G5200 の Brainux 環境**を前提としています。
