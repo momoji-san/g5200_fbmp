@@ -1,12 +1,10 @@
-# g5200_sdisp
-
 # fbmp
 
 SHARP Brain PW-G5200 の Brainux 環境で、24bit BMP画像をサブディスプレイに表示するための C プログラムです。
 
 `/dev/fb1` の framebuffer を直接操作して、240×120ピクセルの BMP画像を表示します。
 
-## 概要
+### 概要
 
 SHARP Brain PW-G5200 の下部にあるサブディスプレイは、Brainux では framebuffer デバイスとして `/dev/fb1` からアクセスできます。
 
