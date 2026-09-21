@@ -28,17 +28,15 @@ PW-G5200 サブディスプレイ
 
 サブディスプレイのサイズは **240×120ピクセル**です。
 
-## 動作環境
+### 動作環境
 
-* SHARP Brain PW-G5200
+* SHARP Brain PW-G5200 （他のサブディスプレイ付きの機種では動作未確認）
 * Brainux
-* Linux framebuffer
 * GCC
-* `/dev/fb1`
 
 このプログラムは、PW-G5200 のサブディスプレイが `/dev/fb1` として認識されている環境を前提としています。
 
-## framebuffer
+### framebuffer
 
 PW-G5200 では、サブディスプレイの framebuffer として `/dev/fb1` を使用します。
 
@@ -62,7 +60,7 @@ ioctl(fb, FBIOGET_FSCREENINFO, &finfo);
 
 そのため、想定している環境と異なる場合にはエラーとして終了します。
 
-## 対応BMP
+### 対応BMP
 
 現在対応しているBMPは以下です。
 
@@ -78,7 +76,7 @@ ioctl(fb, FBIOGET_FSCREENINFO, &finfo);
 ./fbmp image.bmp
 ```
 
-## コンパイル
+### コンパイル
 
 Brainux 上で以下のようにコンパイルします。
 
@@ -86,7 +84,7 @@ Brainux 上で以下のようにコンパイルします。
 gcc -O2 -Wall -o fbmp fbmp.c
 ```
 
-## 使用方法
+### 使用方法
 
 BMP画像を指定して実行します。
 
@@ -102,7 +100,7 @@ Displayed: image.bmp
 
 と表示されます。
 
-## BMPの白黒変換
+### BMPの白黒変換について
 
 PW-G5200 のサブディスプレイは白黒表示のため、24bit BMPのRGBカラー情報を白黒に変換してから framebuffer に書き込みます。
 
@@ -130,7 +128,7 @@ brightness < 128
 
 そのため、カラーBMPを指定した場合でも、サブディスプレイ上では白黒で表示されます。
 
-## BMPの読み込み
+### BMPの読み込み
 
 BMPファイルのヘッダを読み込み、
 
@@ -154,7 +152,7 @@ Error: BMP must be 240x120 pixels
 Error: BMP must be 24bit
 ```
 
-## BMPの上下方向
+### BMPの上下方向
 
 BMPでは一般的に画像データが下の行から保存されています。
 
@@ -168,7 +166,7 @@ bottom_up = (info_header.biHeight > 0);
 
 そのため、通常のBMPをそのまま指定しても上下が逆にならないようになっています。
 
-## framebufferへの書き込み
+### framebufferへの書き込み
 
 BMP画像を読み込んだ後、240×120の各ピクセルを32bit framebuffer形式へ変換します。
 
@@ -202,7 +200,7 @@ pos = y * finfo.line_length + x * 4;
 
 として計算しています。
 
-## 表示更新
+### 表示更新
 
 framebufferへ画像を書き込んだ後、
 
@@ -218,7 +216,7 @@ ioctl(fb, FBIOPAN_DISPLAY, &vinfo);
 Warning: FBIOPAN_DISPLAY failed: ...
 ```
 
-## エラー処理
+### エラー処理
 
 以下のような条件を確認しています。
 
@@ -238,7 +236,7 @@ Warning: FBIOPAN_DISPLAY failed: ...
 * BMP画像データを読み込めない
 * framebufferへの書き込みに失敗する
 
-## ファイル構成
+### ファイル構成
 
 最小構成では以下の2つだけで使用できます。
 
@@ -256,7 +254,7 @@ fbmp
 
 が生成されます。
 
-## 注意事項
+### 注意事項
 
 このプログラムは **SHARP Brain PW-G5200 の Brainux 環境**を前提としています。
 
@@ -274,25 +272,21 @@ fbmp
 
 また、サブディスプレイが白黒表示であるため、カラーBMPを表示してもカラー表示にはなりません。
 
-## 目的
+### 目的
 
 このプログラムは、SHARP Brain PW-G5200 を Brainux から活用するための実験・開発用プログラムとして作成したものです。
 
 Linux の framebuffer を直接操作することで、通常の Brain アプリケーションとは異なる方法でサブディスプレイを利用できます。
 
-画像表示だけでなく、今後、
+Brainuからは、サブディスプレイのタッチもプログラム成語出来ることを確認していますので、画像表示だけでなく、タッチ操作と組み合わせて様々なことへ応用可能です
 
-* GUI
-* 時計
+* GUIでの入出力
+* 時計表示
 * ステータス表示
 * キーボード入力との連携
 * Brainux 上で動作する各種ツール
-* MachiKania との連携
+* USB機器 との連携した操作や表示
 
-などへの応用も考えられます。
+### License
 
-## License
-
-ライセンスを指定していない場合は、公開時に適切なライセンスを設定してください。
-
-例えば MIT License で公開する場合は、リポジトリに `LICENSE` ファイルを追加してください。
+本ソフトウエアのライセンスはMITライセンスです。
