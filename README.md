@@ -1,10 +1,50 @@
 # fbmp
 
 SHARP Brain PW-G5200 の Brainux 環境で、24bit BMP画像をサブディスプレイに表示するための C プログラムです。
-
 `/dev/fb1` の framebuffer を直接操作して、240×120ピクセルの BMP画像を表示します。
 
-### 概要
+### 動作環境
+
+* SHARP Brain PW-G5200 （他のサブディスプレイ付きの機種では動作未確認）
+* Brainux
+
+このプログラムは、PW-G5200 のサブディスプレイが `/dev/fb1` として認識されている環境を前提としています。
+
+### コンパイル
+
+src フォルダにある fbmp.c を Brainux のSDカード等にコピーし、Brainux 上で以下のようにコンパイルします。
+Windows PC でBrainux のSDカードを挿すして表示されるフォルダにコピーすると、Brainux からは、/boot/ ディレクトリに配置されるので、/boot/フォルダから、ホームディレクトリ /home/user/ 等にコピーしてコンパイルしてください。
+
+```sh
+gcc -O2 -Wall -o fbmp fbmp.c
+```
+
+### 使用方法
+
+BMP画像を指定して実行します。
+
+```sh
+./fbmp image.bmp
+```
+
+正常に実行されると、下記が表示されます。
+
+```text
+Displayed: image.bmp
+```
+
+### 対応BMP
+
+現在対応しているBMPは以下です。Windowsのペイント等で作成してください。
+Windowsのペイントでは240x120ドットの画像を名前を付けて保存で24bitで保存すればOKです。
+
+* 24bit BMP
+* 無圧縮 BMP (`BI_RGB`)
+* 240×120ピクセル
+* 通常の下から上へ保存されるBMP
+* 上から下へ保存されるBMP
+
+### プログラム処理概要
 
 SHARP Brain PW-G5200 の下部にあるサブディスプレイは、Brainux では framebuffer デバイスとして `/dev/fb1` からアクセスできます。
 
@@ -27,14 +67,6 @@ PW-G5200 サブディスプレイ
 という処理を行います。
 
 サブディスプレイのサイズは **240×120ピクセル**です。
-
-### 動作環境
-
-* SHARP Brain PW-G5200 （他のサブディスプレイ付きの機種では動作未確認）
-* Brainux
-* GCC
-
-このプログラムは、PW-G5200 のサブディスプレイが `/dev/fb1` として認識されている環境を前提としています。
 
 ### framebuffer
 
@@ -59,46 +91,6 @@ ioctl(fb, FBIOGET_FSCREENINFO, &finfo);
 ```
 
 そのため、想定している環境と異なる場合にはエラーとして終了します。
-
-### 対応BMP
-
-現在対応しているBMPは以下です。
-
-* 24bit BMP
-* 無圧縮 BMP (`BI_RGB`)
-* 240×120ピクセル
-* 通常の下から上へ保存されるBMP
-* 上から下へ保存されるBMP
-
-使用例：
-
-```sh
-./fbmp image.bmp
-```
-
-### コンパイル
-
-Brainux 上で以下のようにコンパイルします。
-
-```sh
-gcc -O2 -Wall -o fbmp fbmp.c
-```
-
-### 使用方法
-
-BMP画像を指定して実行します。
-
-```sh
-./fbmp image.bmp
-```
-
-正常に表示されると、
-
-```text
-Displayed: image.bmp
-```
-
-と表示されます。
 
 ### BMPの白黒変換について
 
